@@ -1,46 +1,8 @@
-# import telebot
-# from config import TOKEN
-# import random
-# bot = telebot.TeleBot(TOKEN)
-
-
-# """Команда СТАРТ"""
-
-
-# @bot.message_handler(commands=['start'])
-# def welcome(message):
-#     markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
-
-#     item1 = telebot.types.KeyboardButton('Рандомное число')
-#     item2 = telebot.types.KeyboardButton('Кинуть кость')
-
-#     markup.add(item1, item2)
-
-#     bot.send_message(message.chat.id, 'Добро пожаловать! Выберите нужный вам пункт меню: ', reply_markup=markup)
-
-
-# def random_number(message):
-#     bot.send_message(message.chat.id, str(random.randint(1, 10)))
-
-# @bot.message_handler(content_types=['text'])
-# def send_text(message):
-#     if message.text == 'привет':
-#         bot.send_message(message.chat.id, 'Привет, как дела?')
-#     elif message.text == 'Рандомное число':
-#         random_number(message)
-#     elif message.text == 'Кинуть кость':
-#         bot.send_message(message.chat.id, f'Вам выпало {(random.randint(1, 6))}')
-#     else:
-#         bot.send_message(message.chat.id, 'Данный функционал находится в разработке')
-
-
-# bot.polling(none_stop=True)
-
 import telebot
 import random
-from config import TOKEN
+from config import token
 
-bot = telebot.TeleBot(TOKEN)
+bot = telebot.TeleBot(token)
 
 anecdoteList = ['Когда ты умер, ты об этом не знаешь, только тяжело твоим близким. То же самое, когда ты тупой... anekdotov.net',
                 '— Продайте мне собаку. — Суку? — Не, с@ку не надо, давайте нормальную. — Сука — это пол собаки. — А зачем мне пол собаки? Давайте целую. anekdotov.net',
@@ -54,20 +16,66 @@ def welcome(message):
     markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
     item1 = telebot.types.KeyboardButton('У меня плохое настроение')
     item2 = telebot.types.KeyboardButton('У меня хорошее настроение')
+    item3 = telebot.types.KeyboardButton('Посчитай два числа')
 
-    markup.add(item1, item2)
+    markup.add(item1, item2, item3)
 
     bot.send_message(message.chat.id, 'Дарова', reply_markup=markup)
 
 
 @bot.message_handler(content_types=['text'])
 def sendText(message):
+
+
+    example: str = message.text
+
     if message.text == 'У меня плохое настроение':
         bot.send_message(message.chat.id, str(random.choice(anecdoteList)))
     elif message.text == 'У меня хорошее настроение':
         bot.send_message(message.chat.id, 'Всю жизнь тебе писать на питоне!')
+    elif message.text == 'Посчитай два числа':
+        bot.send_message(message.chat.id, 'Введите пример в виде "a+b" без кавычек')
+    elif example.__contains__('*'):
+        result = parseExample('*', example)
+        bot.send_message(message.chat.id, f'Вот результат = {result}')
+    elif example.__contains__('+'):
+        result = parseExample('+', example)
+        bot.send_message(message.chat.id, f'Вот результат = {result}')
+    elif example.__contains__('-'):
+        result = parseExample('-', example)
+        print(result)
+        bot.send_message(message.chat.id, f'Вот результат = {result}')
+    elif example.__contains__('/'):
+        result = parseExample('/', example)
+        bot.send_message(message.chat.id, f'Вот результат = {result}')
     else:
-        bot.send_message(message.chat.id, '123')
+        bot.send_message(message.chat.id, 'Ошибка')
 
+def parseExample(symbol, example):
+    firstNumber = example.split(symbol)[0]
+    secondNumber = example.split(symbol)[1]
+    return getResult(symbol, int(firstNumber), int(secondNumber))
+
+def getResult(symbol, a, b):
+    if symbol == '+':
+        return summ(a, b)
+    elif symbol == '-':
+        return diff(a, b)
+    elif symbol == '*':
+        return mult(a, b)
+    elif symbol == '/':
+        return div(a, b)
+
+def summ(a, b):
+    return a + b
+
+def diff(a, b):
+    return a - b
+
+def mult(a, b):
+    return a * b
+
+def div(a, b):
+    return a / b
 
 bot.polling(none_stop=True)
