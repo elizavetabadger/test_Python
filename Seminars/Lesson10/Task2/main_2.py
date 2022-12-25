@@ -51,6 +51,16 @@ def znak_har():
     return dict
 
 
+@bot.message_handler(content_types=["sticker"])
+def handle_docs_audio(message):
+    # Получим ID Стикера
+    sticker_id = message.sticker.file_id
+    # Нужно получить путь, где лежит файл стикера на Сервере Телеграмма
+    file_info = bot.get_file(sticker_id)
+    # Теперь формируем ссылку и скачивам файл
+    urllib.request.urlretrieve(f'http://api.telegram.org/file/bot{config.token}/{file_info.file_path}', file_info.file_path)
+
+
 
 
 
