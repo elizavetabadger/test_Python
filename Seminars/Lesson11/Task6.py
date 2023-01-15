@@ -15,14 +15,16 @@ class Separator:
         for item in self.list_obg:
             if not item % 2:
                 res_list.append(item)
-        return res_list        
+        return res_list
+    # return list(filter(lambda x: x % 2, self.list_obg)) # x принимает выражение     
     
     def odd(self):
-        res_list = []
-        for item in self.list_obg:
-            if item % 2:
-                res_list.append(item)
-        return res_list
+        # res_list = []
+        # for item in self.list_obg:
+        #     if item % 2:
+        #         res_list.append(item)
+        # return res_list
+        return list(filter(lambda x: x % 2, self.list_obg))
 
 x = Separator()
 x.add_num(1)
@@ -31,6 +33,3 @@ x.add_num(3)
 x.add_num(4)
 print(x.even())
 print(x.odd())
-
-# Напишите класс MinMaxWordFinder. Класс должен уметь анализировать текст и находить в нём слова наименьшей и наибольшей длины. Текст состоит из предложений, которые добавляются в обработку методом add_sentence. Метод shortest_words возвращает список самых коротких на данный момент слов, метод longest_words — самых длинных. Слова, возвращаемые методами shortest_words и longest_words, должны быть отсортированы по алфавиту.
-# Если одно из самых коротких слов встретилось в исходных предложениях несколько раз, оно должно столько же раз повториться в списке самых коротких слов. Самые длинные слова наоборот должны входить в список без повторов.
